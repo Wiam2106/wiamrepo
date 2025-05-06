@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-app1-deployment
+spec:
+  replicas: 2  # Nombre de réplicas du pod
+  selector:
+    matchLabels:
+      app: php-app1
+  template:
+    metadata:
+      labels:
+        app: php-app1
+    spec:
+      containers:
+      - name: php-app1
+        image: 339712912786.dkr.ecr.us-west-2.amazonaws.com/weather-app/repo:v1
+        ports:
+        - containerPort: 80  # Port que votre application écoute
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-app1-service
+spec:
+  selector:
+    app: php-app1
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer  
